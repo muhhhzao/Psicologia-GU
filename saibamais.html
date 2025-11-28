@@ -194,97 +194,79 @@ window.addEventListener('load', revelar);
 
 
     
-<div class="formulario">
-<h2>Agende seu atendimento:</h2>
+<section class="formulario">
+  <h2>Agende seu atendimento:</h2>
 
+  <form id="agendaForm" action="https://formsubmit.co/psi.gustavo.cordeiro@gmail.com" method="POST">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="box">
 
-<form id="agendaForm" action="https://formsubmit.co/psi.gustavo.cordeiro@gmail.com" method="POST">
+    <label for="nome">Nome completo:</label>
+    <input type="text" id="nome" name="nome" required>
 
+    <label for="idade">Idade:</label>
+    <input type="number" id="idade" name="idade" required>
 
-<label for="nome">Nome completo</label>
-<input type="text" id="nome" name="nome" required>
+    <label for="email">Seu e-mail:</label>
+    <input type="email" id="email" name="email" required>
 
+    <label for="numero">Número de telefone:</label>
+    <input type="tel" id="numero" name="numero" required>
 
-<label for="idade">Idade</label>
-<input type="number" id="idade" name="idade" required>
+    <label for="motivo">Motivo da consulta:</label>
+    <textarea id="motivo" name="motivo" rows="4" required></textarea>
 
+    <label for="horario">Escolha um horário:</label>
+    <input type="text" id="horario" name="horario" placeholder="Ex: Terça — 16h" required>
 
-<label for="email">Email</label>
-<input type="email" id="email" name="email" required>
+    <button type="submit">Enviar</button>
+  </form>
 
-
-<label for="numero">Número de telefone</label>
-<input type="tel" id="numero" name="numero" required>
-
-
-<label for="motivo">Motivo da consulta</label>
-<textarea id="motivo" name="motivo" rows="4"></textarea>
-
-
-<label for="horario">Escolha um horário</label>
-<input type="text" id="horario" name="horario" placeholder="Ex: Terça — 16h" required>
-
-
-<button type="submit">Enviar</button>
-</form>
-
-
-<p id="msg"></p>
-
-
-<p id="msg-sucesso" style="display:none; color:green; margin-top:15px; font-weight:600;">
-✔ Sua mensagem foi enviada com sucesso!
-</p>
-
-
-<p id="msg-erro" style="display:none; color:red; margin-top:15px; font-weight:600;">
-✖ Ocorreu um erro ao enviar. Tente novamente.
-</p>
-</div>
-
-
+  <p id="msg"></p>
+  <p id="msg-sucesso" style="display:none; color:green; margin-top:15px; font-weight:600;">
+    ✔ Sua mensagem foi enviada com sucesso!
+  </p>
+  <p id="msg-erro" style="display:none; color:red; margin-top:15px; font-weight:600;">
+    ✖ Ocorreu um erro ao enviar. Tente novamente.
+  </p>
+</section>
 <script>
-const form = document.getElementById("agendaForm");
+  const form = document.getElementById("agendaForm");
 const msg = document.getElementById("msg");
 const msgSucesso = document.getElementById("msg-sucesso");
 const msgErro = document.getElementById("msg-erro");
 
-
 form.addEventListener("submit", async (e) => {
-e.preventDefault();
+  e.preventDefault();
 
+  if (msg) msg.textContent = "Enviando seus dados...";
+  msgSucesso.style.display = "none";
+  msgErro.style.display = "none";
 
-// mensagem de envio
-if (msg) msg.textContent = "Enviando seus dados...";
-msgSucesso.style.display = "none";
-msgErro.style.display = "none";
+  const formData = new FormData(form);
 
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: formData,
+    });
 
-const formData = new FormData(form);
-
-
-try {
-const response = await fetch(form.action, {
-method: "POST",
-body: formData,
+    if (response.ok) {
+      msg.textContent = "";
+      msgSucesso.style.display = "block";
+      form.reset();
+    } else {
+      msg.textContent = "";
+      msgErro.style.display = "block";
+    }
+  } catch (error) {
+    msg.textContent = "";
+    msgErro.style.display = "block";
+  }
 });
 
-
-if (response.ok) {
-msg.textContent = "";
-msgSucesso.style.display = "block";
-form.reset();
-} else {
-msg.textContent = "";
-msgErro.style.display = "block";
-}
-} catch (error) {
-msg.textContent = "";
-msgErro.style.display = "block";
-}
-});
 </script>
-</section>
+
 </main>
   <footer class="footer">
     <div class="footer-content">
